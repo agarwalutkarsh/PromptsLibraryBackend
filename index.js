@@ -46,4 +46,4 @@ server.use('/api/post', auth, postRouter) // at /api/post all the routes for pos
 server.use('/api/allPosts', allPostsRouter)
 server.use('/api/auth', authRouter)
 
-server.listen(8080, () => console.log('Server Started')) // starting the server
+server.listen(process.env.PORT || 8080, () => console.log('Server Started')) // starting the server
