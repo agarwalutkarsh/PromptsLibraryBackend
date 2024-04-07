@@ -21,6 +21,24 @@ async function main() {
 
 const server = express() // defining server
 
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require('swagger-ui-express')
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Prompts Library APIs',
+      version: '1.0.0',
+      description: 'API collection for Prompts Library'
+    }
+  },
+  apis: ['./index.js']
+}
+
+const swaggerSpec = swaggerJsDoc(options)
+
+
 // Auth Middleware
 const auth = (req, res, next) => {
   // const token = req.headers.authorization?.split('Bearer ')?.[1] // there are two ways of getting the "Authorization"
@@ -41,6 +59,7 @@ const auth = (req, res, next) => {
 
 server.use(cors()) // middleware for enabling cors
 server.use(express.json()) // body parser
+server.use('/', swaggerUI.serve, swaggerUI.setup(swaggerSpec))
 // auth flow does not need token - create and login does not require the user to have token
 server.use('/api/post', auth, postRouter) // at /api/post all the routes for posts will be hit
 server.use('/api/allPosts', allPostsRouter)
